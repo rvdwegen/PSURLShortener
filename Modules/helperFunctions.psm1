@@ -1,3 +1,5 @@
+using namespace System.Net
+
 function Receive-HttpTrigger {
     Param($Request, $TriggerMetadata)
 
