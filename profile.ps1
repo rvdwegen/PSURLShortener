@@ -14,7 +14,7 @@
     try {
         Import-Module -Name $_ -ErrorAction Stop
     } catch {
-        Write-LogMessage -message "Failed to import module $($_): $_.Exception.Message" -Sev 'debug'
+        throw "Failed to import module $($_): $($_.Exception.Message)"
         $_.Exception.Message
     }
 }
