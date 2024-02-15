@@ -23,16 +23,16 @@ function Invoke-URLRedirect {
     
     try {
         Connect-AzAccount -Identity
+        $urlTableContext = New-AzDataTableContext -TableName 'shorturls' -StorageAccountName 'stourlshort' -ManagedIdentity
     } catch {
         $_.Exception.Message
         $ErrorMessage = $_.Exception.Message
         $StatusCode = [HttpStatusCode]::Unauthorized
     }
 
-    $urlTableContext = New-AzDataTableContext -TableName 'shorturls' -StorageAccountName 'stourlshort' -ManagedIdentity
-
-    $urlObject = (Get-AzDataTableEntity -Filter "RowKey eq '$($Request.Params.URLslug)'" -context $urlTableContext)
-    if (!$urlObject) {
+    try {
+        $urlObject = (Get-AzDataTableEntity -Filter "RowKey eq '$($Request.Params.URLslug)'" -context $urlTableContext)
+    } catch {
         $urlObject = [PSCustomObject]@{
             url = "https://microsoft.com"
         }
