@@ -8,16 +8,8 @@
 #
 # You can define helper functions, run commands, or specify environment variables
 # NOTE: any variables defined that are not environment variables will get reset after the first execution
- 
-# Import modules
-@('Az.Accounts','AzBobbyTables') | ForEach-Object {
-    try {
-        Import-Module -Name $_ -ErrorAction Stop
-    } catch {
-        throw "Failed to import module $($_): $($_.Exception.Message)"
-        $_.Exception.Message
-    }
-}
+
+Import-Module '.\Modules\AzBobbyTables'
 
 $ProgressPreference = 'SilentlyContinue'
 
