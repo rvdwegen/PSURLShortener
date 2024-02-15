@@ -20,7 +20,7 @@ function Receive-HttpTrigger {
 function Invoke-URLRedirect {
     # Input bindings are passed in via param block.
     param($Request, $TriggerMetadata)
-    Import-Module '.\Modules\AzBobbyTables'
+
     #$randomSlug = (("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789").ToCharArray() | Get-Random -Count 8) -Join ""
     
     try {
