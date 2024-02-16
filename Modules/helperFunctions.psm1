@@ -41,7 +41,7 @@ function Invoke-URLRedirect {
             $httpResponse = [HttpResponseContext]@{
                 StatusCode  = [HttpStatusCode]::OK
                 Headers     = @{'content-type' = 'text/html'}
-                Body        = "<html><body>$($Request.Params.URLslug) was not found</body></html>"
+                Body        = "<html><body>Code $($Request.Params.URLslug) could not be matched to a stored URL</body></html>"
             }
         }
 
