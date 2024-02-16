@@ -30,19 +30,32 @@ function Invoke-URLRedirect {
 
     try {
         $urlObject = (Get-AzDataTableEntity -Filter "RowKey eq '$($Request.Params.URLslug)'" -context $urlTableContext)
+
+        if ($urlObject) {
+            $httpReply = [HttpResponseContext]@{
+                StatusCode  = [HttpStatusCode]::Found
+                Headers     = @{ Location = $urlObject.url }
+                Body        = ''
+            }
+        } else {
+            $httpReply = [HttpResponseContext]@{
+                StatusCode  = [HttpStatusCode]::OK
+                Headers     = @{'content-type' = 'text/html'}
+                Body        = "<html><body>$($Request.Params.URLslug) was not found</body></html>"
+            }
+        }
+
     } catch {
         $_.Exception.Message
-        $urlObject = [PSCustomObject]@{
-            url = "https://microsoft.com"
-        }
+        # $urlObject = [PSCustomObject]@{
+        #     url = "https://microsoft.com"
+        # }
     }
 
     # Associate values to output bindings by calling 'Push-OutputBinding'.
-    Push-OutputBinding -Name Response -Value ([HttpResponseContext]@{
-        StatusCode  = [HttpStatusCode]::Found
-        Headers     = @{ Location = $urlObject.url }
-        Body        = ''
-    })
+    Push-OutputBinding -Name Response -Value (
+        $httpReply
+    )
 
 }
 
