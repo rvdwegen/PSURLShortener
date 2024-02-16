@@ -18,6 +18,7 @@ $obj = [pscustomobject]@{
     shortURL = "https://short.vdwegen.app/$slug"
     description = $Request.Query.Description
     slug = $slug
+    counter = 0
 }
 
 # write obj to table
