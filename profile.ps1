@@ -10,8 +10,6 @@
 # NOTE: any variables defined that are not environment variables will get reset after the first execution
 
 Import-Module '.\Modules\AzBobbyTables'
-$global:urlTableContext = New-AzDataTableContext -TableName 'shorturls' -StorageAccountName 'stourlshort' -ManagedIdentity
-
 
 $ProgressPreference = 'SilentlyContinue'
 
