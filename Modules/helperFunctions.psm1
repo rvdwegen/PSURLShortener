@@ -35,6 +35,7 @@ function Invoke-URLRedirect {
     try {
         $urlObject = (Get-AzDataTableEntity -Filter "RowKey eq '$($Request.Params.URLslug)'" -context $urlTableContext)
     } catch {
+        $_.Exception.Message
         $urlObject = [PSCustomObject]@{
             url = "https://microsoft.com"
         }
