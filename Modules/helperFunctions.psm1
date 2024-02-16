@@ -38,18 +38,18 @@ function Invoke-URLRedirect {
                 Body        = ''
             }
         } else {
+            $data = Get-Content -Path '.\Resources\notfound.html'
+            $data = $data.Replace('{URLSLUG}',$($Request.Params.URLslug))
+
             $httpResponse = [HttpResponseContext]@{
                 StatusCode  = [HttpStatusCode]::OK
-                Headers     = @{'content-type' = 'text/html'}
-                Body        = "<html><body>Code $($Request.Params.URLslug) could not be matched to a stored URL</body></html>"
+                Headers     = @{ 'content-type' = 'text/html' }
+                Body        = $data #"<html><body>Code $($Request.Params.URLslug) could not be matched to a stored URL</body></html>"
             }
         }
 
     } catch {
-        $_.Exception.Message
-        # $urlObject = [PSCustomObject]@{
-        #     url = "https://microsoft.com"
-        # }
+        throw $_.Exception.Message
     }
 
     # Associate values to output bindings by calling 'Push-OutputBinding'.
