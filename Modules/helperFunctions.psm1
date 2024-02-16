@@ -24,8 +24,8 @@ function Invoke-URLRedirect {
     #$randomSlug = (("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789").ToCharArray() | Get-Random -Count 8) -Join ""
     
     try {
-        Connect-AzAccount -Identity
-        $urlTableContext = New-AzDataTableContext -TableName 'shorturls' -StorageAccountName 'stourlshort' -ManagedIdentity
+        #Connect-AzAccount -Identity
+        #$urlTableContext = New-AzDataTableContext -TableName 'shorturls' -StorageAccountName 'stourlshort' -ManagedIdentity
     } catch {
         $_.Exception.Message
         $ErrorMessage = $_.Exception.Message
