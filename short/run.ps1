@@ -11,9 +11,14 @@ if ($Request.Query.slug) {
     $slug = (("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789").ToCharArray() | Get-Random -Count 4) -Join ""
 }
 
+# account for multi-link creation
+# filter for doubles before pushing to storage and returning data
+
 $hosts = (Get-AzWebApp -Name vdwegen-urlshort).HostNames
 
 $obj = [pscustomobject]@{
+    PartitionKey = "URL"
+    RowKey = $slug
     originalURL = $Request.Query.URL
     shortURL = "https://short.vdwegen.app/$slug"
     description = $Request.Query.Description
