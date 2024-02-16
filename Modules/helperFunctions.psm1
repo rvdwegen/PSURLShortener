@@ -41,7 +41,7 @@ function Invoke-URLRedirect {
             $httpReply = [HttpResponseContext]@{
                 StatusCode  = [HttpStatusCode]::OK
                 Headers     = @{'content-type' = 'text/html'}
-                Body        = "<html><body>$($Request.Params.URLslug) was not found</body></html>"
+                Body        = "<html><body>$($Request.Params.URLslug) was not found refer is: $($request.headers.Referer)</body></html>"
             }
         }
 
