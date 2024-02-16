@@ -19,6 +19,7 @@ $obj = [pscustomobject]@{
     description = $Request.Query.Description
     slug = $slug
     counter = 0
+    hosts = $hosts
 }
 
 # write obj to table
