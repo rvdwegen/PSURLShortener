@@ -38,7 +38,7 @@ function Invoke-URLRedirect {
                 Body        = ''
             }
         } else {
-            $data = Get-Content -Path '.\Resources\notfound.html'
+            $data = Get-Content -Path '..\Resources\notfound.html'
             $data = $data.Replace('{URLSLUG}',$($Request.Params.URLslug))
 
             $httpResponse = [HttpResponseContext]@{
