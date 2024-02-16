@@ -8,7 +8,7 @@ $StatusCode = [HttpStatusCode]::OK
 if ($Request.Query.slug) {
     $slug = $Request.Query.slug
 } else {
-    $slug = (("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789").ToCharArray() | Get-Random -Count 8) -Join ""
+    $slug = (("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789").ToCharArray() | Get-Random -Count 4) -Join ""
 }
 
 $hosts = (Get-AzWebApp -Name vdwegen-urlshort).HostNames
