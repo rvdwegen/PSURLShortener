@@ -20,16 +20,12 @@ function Receive-HttpTrigger {
 function Invoke-URLRedirect {
     # Input bindings are passed in via param block.
     param($Request, $TriggerMetadata)
-
-    #$randomSlug = (("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789").ToCharArray() | Get-Random -Count 8) -Join ""
     
     try {
         Connect-AzAccount -Identity
         $urlTableContext = New-AzDataTableContext -TableName 'shorturls' -StorageAccountName 'stourlshort' -ManagedIdentity
     } catch {
-        $_.Exception.Message
-        $ErrorMessage = $_.Exception.Message
-        $StatusCode = [HttpStatusCode]::Unauthorized
+        throw $_.Exception.Message
     }
 
     try {
