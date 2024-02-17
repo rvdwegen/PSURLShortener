@@ -14,14 +14,18 @@ if ($Request.Query.slug) {
 # account for multi-link creation
 # filter for doubles before pushing to storage and returning data
 
-$hosts = (Get-AzWebApp -Name vdwegen-urlshort).HostNames
+
+$response = Invoke-WebRequest -Uri $Request.Query.URL
+$title = $response.ParsedHtml.title
+$description = $response.ParsedHtml.getElementsByTagName('meta') | Where-Object { $_.name -eq 'description' } | Select-Object -ExpandProperty content
 
 $obj = [pscustomobject]@{
     PartitionKey = "URL"
     RowKey = $slug
     originalURL = $Request.Query.URL
     shortURL = "https://short.vdwegen.app/$slug"
-    description = $Request.Query.Description
+    title = $title
+    description = $description
     slug = $slug
     counter = 0
 }
