@@ -15,26 +15,32 @@ if ($Request.Query.slug) {
 # filter for doubles before pushing to storage and returning data
 
 try {
-    $response = Invoke-WebRequest -Uri $Request.Query.URL
-    $title = $response.ParsedHtml.title
-    $description = $response.ParsedHtml.getElementsByTagName('meta') | Where-Object { $_.name -eq 'description' } | Select-Object -ExpandProperty content
-    
-
-    Write-Host "Title: $title"
-    Write-Host "Description: $description"
+    Connect-AzAccount -Identity
+    $urlTableContext = New-AzDataTableContext -TableName 'shorturls' -StorageAccountName 'stourlshort' -ManagedIdentity
 } catch {
-    $_.Exception.Message
+    throw $_.Exception.Message
 }
 
-$obj = [pscustomobject]@{
-    PartitionKey = "URL"
-    RowKey = $slug
-    originalURL = $Request.Query.URL
-    shortURL = "https://short.vdwegen.app/$slug"
-    title = $title
-    description = $description
-    slug = $slug
-    counter = 0
+try {
+    $urlObject = (Get-AzDataTableEntity -Filter "RowKey eq '$($slug)'" -context $urlTableContext)
+
+    if ($urlObject) {
+        $StatusCode  = [HttpStatusCode]::BadRequest
+    } else {
+        $obj = @{
+            PartitionKey = "URL"
+            RowKey = $slug
+            originalURL = $Request.Query.URL
+            shortURL = "https://short.vdwegen.app/$slug"
+            slug = $slug
+            counter = 0
+        }
+
+        Add-AzDataTableEntity -Entity $obj -context $urlTableContext
+    }
+
+} catch {
+    throw $_.Exception.Message
 }
 
 # write obj to table
