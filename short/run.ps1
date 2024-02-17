@@ -15,7 +15,7 @@ if ($Request.Query.slug) {
 # filter for doubles before pushing to storage and returning data
 
 
-$response = Invoke-WebRequest -Uri $Request.Query.URL
+$response = Invoke-WebRequest -Uri $Request.Query.URL -UseBasicParsing
 $title = $response.ParsedHtml.title
 $description = $response.ParsedHtml.getElementsByTagName('meta') | Where-Object { $_.name -eq 'description' } | Select-Object -ExpandProperty content
 
