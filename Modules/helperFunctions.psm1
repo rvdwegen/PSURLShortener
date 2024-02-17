@@ -36,8 +36,8 @@ function Invoke-URLRedirect {
         if ($urlObject) {
             Write-Host "here3"
             # Increase visit count
-            $urlObject.visitors++
-            Update-AzDataTableEntity -Entity $urlObject -context $urlTableContext
+            #$urlObject.visitors++
+            #Update-AzDataTableEntity -Entity $urlObject -context $urlTableContext
 
             # Give a 302 response back
             $httpResponse = [HttpResponseContext]@{
