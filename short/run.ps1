@@ -19,6 +19,9 @@ $response = Invoke-WebRequest -Uri $Request.Query.URL
 $title = $response.ParsedHtml.title
 $description = $response.ParsedHtml.getElementsByTagName('meta') | Where-Object { $_.name -eq 'description' } | Select-Object -ExpandProperty content
 
+Write-Host "Title: $title"
+Write-Host "Description: $description"
+
 $obj = [pscustomobject]@{
     PartitionKey = "URL"
     RowKey = $slug
