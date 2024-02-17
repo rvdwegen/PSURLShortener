@@ -60,14 +60,14 @@ function Invoke-URLRedirect {
         }
 
     } catch {
-        Write-Warning $_.Exception.Message
+        Write-Host $_.Exception.Message
     }
     Write-Host "here5"
     # Associate values to output bindings by calling 'Push-OutputBinding'.
     Push-OutputBinding -Name Response -Value (
         $httpResponse
     )
-
+    Write-Host "here6"
 }
 
 Export-ModuleMember -Function @('Receive-HttpTrigger', 'Invoke-URLRedirect')
