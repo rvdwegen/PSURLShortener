@@ -5,12 +5,6 @@ param($Request, $TriggerMetadata)
 
 $StatusCode = [HttpStatusCode]::OK
 
-if ($Request.Query.slug) {
-    $slug = $Request.Query.slug
-} else {
-    $slug = (("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789").ToCharArray() | Get-Random -Count 4) -Join ""
-}
-
 # account for multi-link creation
 # filter for doubles before pushing to storage and returning data
 
@@ -22,24 +16,33 @@ try {
 }
 
 try {
+    # Determine if we need to generate a slug
+    if ($Request.Query.slug) {
+        $slug = $Request.Query.slug
+    } else {
+        $slug = (("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789").ToCharArray() | Get-Random -Count 4) -Join ""
+    }
+
+    # Define the hashtable
+    $result = @{
+        PartitionKey = "URL"
+        RowKey = $slug
+        originalURL = $Request.Query.URL
+        shortURL = "https://short.vdwegen.app/$slug"
+        slug = $slug
+        visitors = 0
+    }
+
     $urlObject = (Get-AzDataTableEntity -Filter "RowKey eq '$($slug)'" -context $urlTableContext)
 
     if ($urlObject) {
         $StatusCode  = [HttpStatusCode]::BadRequest
     } else {
-        $result = @{
-            PartitionKey = "URL"
-            RowKey = $slug
-            originalURL = $Request.Query.URL
-            shortURL = "https://short.vdwegen.app/$slug"
-            slug = $slug
-            counter = 0
-        }
-
         Add-AzDataTableEntity -Entity $result -context $urlTableContext
 
         $result.Remove('PartitionKey')
         $result.Remove('RowKey')
+        $result.Remove('visitors')
     }
 
 } catch {

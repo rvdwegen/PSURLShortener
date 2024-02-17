@@ -32,6 +32,10 @@ function Invoke-URLRedirect {
         $urlObject = (Get-AzDataTableEntity -Filter "RowKey eq '$($Request.Params.URLslug)'" -context $urlTableContext)
 
         if ($urlObject) {
+            $urlObject.visitors++
+
+            Update-AzDataTableEntity -Entity $urlObject -context $urlTableContext
+
             $httpResponse = [HttpResponseContext]@{
                 StatusCode  = [HttpStatusCode]::Found
                 Headers     = @{ Location = $urlObject.url }
