@@ -27,7 +27,7 @@ try {
     if ($urlObject) {
         $StatusCode  = [HttpStatusCode]::BadRequest
     } else {
-        $obj = @{
+        $result = @{
             PartitionKey = "URL"
             RowKey = $slug
             originalURL = $Request.Query.URL
@@ -37,6 +37,9 @@ try {
         }
 
         Add-AzDataTableEntity -Entity $obj -context $urlTableContext
+
+        $result.Remove('PartitionKey')
+        $result.Remove('RowKey')
     }
 
 } catch {
@@ -48,5 +51,5 @@ try {
 # Associate values to output bindings by calling 'Push-OutputBinding'.
 Push-OutputBinding -Name Response -Value ([HttpResponseContext]@{
     StatusCode = $StatusCode
-    Body       = $obj
+    Body       = $result
 })
