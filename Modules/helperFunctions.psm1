@@ -24,15 +24,17 @@ function Invoke-URLRedirect {
     try {
         Connect-AzAccount -Identity
         $urlTableContext = New-AzDataTableContext -TableName 'shorturls' -StorageAccountName 'stourlshort' -ManagedIdentity
+        Write-Host "here1"
     } catch {
         throw $_.Exception.Message
     }
 
     try {
+        Write-Host "here2"
         $urlObject = (Get-AzDataTableEntity -Filter "RowKey eq '$($Request.Params.URLslug)'" -context $urlTableContext)
 
         if ($urlObject) {
-
+            Write-Host "here3"
             # Increase visit count
             $urlObject.visitors++
             Update-AzDataTableEntity -Entity $urlObject -context $urlTableContext
@@ -43,7 +45,7 @@ function Invoke-URLRedirect {
                 Headers     = @{ Location = $urlObject.url }
                 Body        = ''
             }
-
+            Write-Host "here4"
         } else {
 
             # Get the notfound HTML content
@@ -60,7 +62,7 @@ function Invoke-URLRedirect {
     } catch {
         Write-Warning $_.Exception.Message
     }
-
+    Write-Host "here5"
     # Associate values to output bindings by calling 'Push-OutputBinding'.
     Push-OutputBinding -Name Response -Value (
         $httpResponse
