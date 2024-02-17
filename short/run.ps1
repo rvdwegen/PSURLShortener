@@ -23,7 +23,7 @@ try {
     Write-Host "Title: $title"
     Write-Host "Description: $description"
 } catch {
-    throw $_.Exception.Message
+    $_.Exception.Message
 }
 
 $obj = [pscustomobject]@{
