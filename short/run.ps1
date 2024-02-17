@@ -36,7 +36,7 @@ try {
             counter = 0
         }
 
-        Add-AzDataTableEntity -Entity $obj -context $urlTableContext
+        Add-AzDataTableEntity -Entity $result -context $urlTableContext
 
         $result.Remove('PartitionKey')
         $result.Remove('RowKey')
