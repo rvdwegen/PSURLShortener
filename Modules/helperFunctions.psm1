@@ -49,7 +49,6 @@ function Invoke-URLRedirect {
         }
 
     } catch {
-        ls
         throw $_.Exception.Message
     }
 

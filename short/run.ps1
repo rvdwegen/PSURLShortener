@@ -14,13 +14,17 @@ if ($Request.Query.slug) {
 # account for multi-link creation
 # filter for doubles before pushing to storage and returning data
 
+try {
+    $response = Invoke-WebRequest -Uri $Request.Query.URL
+    $title = $response.ParsedHtml.title
+    $description = $response.ParsedHtml.getElementsByTagName('meta') | Where-Object { $_.name -eq 'description' } | Select-Object -ExpandProperty content
+    
 
-$response = Invoke-WebRequest -Uri $Request.Query.URL -UseBasicParsing
-$title = $response.ParsedHtml.title
-$description = $response.ParsedHtml.getElementsByTagName('meta') | Where-Object { $_.name -eq 'description' } | Select-Object -ExpandProperty content
-
-Write-Host "Title: $title"
-Write-Host "Description: $description"
+    Write-Host "Title: $title"
+    Write-Host "Description: $description"
+} catch {
+    throw $_.Exception.Message
+}
 
 $obj = [pscustomobject]@{
     PartitionKey = "URL"
