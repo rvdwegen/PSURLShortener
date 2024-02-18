@@ -25,13 +25,14 @@ function Invoke-URLRedirect {
             }
         } else {
             # Get the notfound HTML content
-            $data = Get-Content -Path 'C:\home\site\wwwroot\Resources\notfound.html' -Raw
-            $data = $data.Replace('{URLSLUG}',$($Request.Params.URLslug))
+            #$data = Get-Content -Path 'C:\home\site\wwwroot\Resources\notfound.html' -Raw
+            #$data = $data.Replace('{URLSLUG}',$($Request.Params.URLslug))
 
             $httpResponse = [HttpResponseContext]@{
-                StatusCode  = [HttpStatusCode]::OK
-                Headers     = @{ 'content-type' = 'text/html' }
-                Body        = $data #"<html><body>Code $($Request.Params.URLslug) could not be matched to a stored URL</body></html>"
+                #StatusCode  = [HttpStatusCode]::OK
+                StatusCode  = [HttpStatusCode]::NotFound
+                #Headers     = @{ 'content-type' = 'text/html' }
+                #Body        = $data #"<html><body>Code $($Request.Params.URLslug) could not be matched to a stored URL</body></html>"
             }
         }
     } catch {
