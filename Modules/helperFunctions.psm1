@@ -23,7 +23,7 @@ function Invoke-URLRedirect {
             # Give a 302 response back
             $httpResponse = [HttpResponseContext]@{
                 StatusCode  = [HttpStatusCode]::Found
-                Headers     = @{ Location = $urlObject.url }
+                Headers     = @{ Location = $urlObject.originalURL }
                 Body        = ''
             }
             Write-Host "here4"
@@ -52,4 +52,3 @@ function Invoke-URLRedirect {
 }
 
 Export-ModuleMember -Function @('Invoke-URLRedirect')
-Write-Host "here7"
