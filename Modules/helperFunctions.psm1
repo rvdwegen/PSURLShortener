@@ -52,3 +52,4 @@ function Invoke-URLRedirect {
 }
 
 Export-ModuleMember -Function @('Invoke-URLRedirect')
+Write-Host "here7"
