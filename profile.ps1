@@ -9,7 +9,10 @@
 # You can define helper functions, run commands, or specify environment variables
 # NOTE: any variables defined that are not environment variables will get reset after the first execution
 
+using namespace System.Net
+
 Import-Module '.\Modules\AzBobbyTables'
+Import-Module '.\Modules\helperFunctions.psm1'
 
 $ProgressPreference = 'SilentlyContinue'
 

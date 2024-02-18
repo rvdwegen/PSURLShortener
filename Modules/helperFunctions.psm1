@@ -1,22 +1,3 @@
-using namespace System.Net
-
-function Receive-HttpTrigger {
-    Param($Request, $TriggerMetadata)
-
-    Set-Location (Get-Item $PSScriptRoot).Parent.Parent.FullName
-    Write-Host (Get-Item $PSScriptRoot).Parent.Parent.FullName
-    $APIName = $TriggerMetadata.FunctionName
-
-    $FunctionName = 'Invoke-{0}' -f $APIName
-
-    $HttpTrigger = @{
-        Request         = $Request
-        TriggerMetadata = $TriggerMetadata
-    }
-
-    & $FunctionName @HttpTrigger
-}
-
 function Invoke-URLRedirect {
     # Input bindings are passed in via param block.
     param($Request, $TriggerMetadata)
@@ -67,7 +48,7 @@ function Invoke-URLRedirect {
         $httpResponse
     )
     Write-Host "here6"
-    
+
 }
 
-Export-ModuleMember -Function @('Receive-HttpTrigger', 'Invoke-URLRedirect')
+Export-ModuleMember -Function @('Invoke-URLRedirect')

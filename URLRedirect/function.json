@@ -1,5 +1,5 @@
 {
-    "scriptFile": "../Modules/helperFunctions.psm1",
+    "scriptFile": "../Modules/entrypoint.psm1",
     "entryPoint": "Receive-HttpTrigger",
     "bindings": [
         {
