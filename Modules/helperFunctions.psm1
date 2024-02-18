@@ -4,19 +4,27 @@ function Invoke-URLRedirect {
     
     try {
         Connect-AzAccount -Identity | Out-Null
-        $urlTableContext = New-AzDataTableContext -TableName 'shorturls' -StorageAccountName 'stourlshort' -ManagedIdentity
     } catch {
         throw "Failed to authenticate to Azure using the function app identity: $($_.Exception.Message)"
     }
 
-    $request.headers
-
-    $request.headers
-
     try {
+        $urlTableContext = New-AzDataTableContext -TableName 'shorturls' -StorageAccountName 'stourlshort' -ManagedIdentity
         $urlObject = (Get-AzDataTableEntity -Filter "RowKey eq '$($Request.Params.URLslug)'" -context $urlTableContext)
 
         if ($urlObject) {
+            $visitsTableContext = New-AzDataTableContext -TableName 'visits' -StorageAccountName 'stourlshort' -ManagedIdentity
+            $visit = @{
+                PartitionKey = "VISIT"
+                RowKey = (New-Guid).Guid
+                ClientIp = $request.headers.'client-ip'
+                UserAgent = $request.headers.'user-agent'
+                Platform = $request.headers.'sec-ch-ua-platform'
+            }
+
+            $visit
+
+
             # Increase visit count
             $urlObject.visitors++
             Update-AzDataTableEntity -Entity $urlObject -context $urlTableContext
