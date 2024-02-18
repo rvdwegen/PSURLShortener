@@ -9,6 +9,10 @@ function Invoke-URLRedirect {
         throw "Failed to authenticate to Azure using the function app identity: $($_.Exception.Message)"
     }
 
+    $request.headers
+
+    $request.headers
+
     try {
         $urlObject = (Get-AzDataTableEntity -Filter "RowKey eq '$($Request.Params.URLslug)'" -context $urlTableContext)
 
