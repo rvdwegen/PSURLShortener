@@ -11,6 +11,8 @@
 
 using namespace System.Net
 
+Import-Module -Name Az.Accounts
+Import-Module -Name Az.Keyvault
 Import-Module '.\Modules\AzBobbyTables'
 Import-Module '.\Modules\helperFunctions.psm1'
 
