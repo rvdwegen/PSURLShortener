@@ -3,7 +3,7 @@
         "path_prefix": "/",
         "policies": { "unauthenticated_action": "AllowAnonymous" }
       },{
-        "path_prefix": "/Receive-HttpTrigger",
+        "path_prefix": "/short",
         "policies": { "unauthenticated_action": "RedirectToLoginPage" }
       }]
 }
