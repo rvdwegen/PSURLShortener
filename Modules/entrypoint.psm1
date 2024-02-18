@@ -10,9 +10,10 @@ function Receive-HttpTrigger {
         Request         = $Request
         TriggerMetadata = $TriggerMetadata
     }
-
+    Write-Host "here in http1"
     try {
         & $FunctionName @HttpTrigger
+        Write-Host "here in http2"
     } catch {
         throw "Failed to execute URL redirect: $($_.Exception.Message)"
     }
