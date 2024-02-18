@@ -1,9 +1,12 @@
 {
-    "routes": [{
-        "path_prefix": "/",
-        "policies": { "unauthenticated_action": "AllowAnonymous" }
-      },{
-        "path_prefix": "/short",
-        "policies": { "unauthenticated_action": "RedirectToLoginPage" }
-      }]
+    "routes": [
+        {
+            "path_prefix": "/",
+            "policies": { "unauthenticated_action": "AllowAnonymous" }
+        },
+        {
+            "path_prefix": "/short",
+            "policies": { "unauthenticated_action": "RedirectToLoginPage" }
+        }
+    ]
 }
