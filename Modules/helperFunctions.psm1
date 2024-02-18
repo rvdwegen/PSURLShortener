@@ -20,7 +20,7 @@ function Invoke-URLRedirect {
                 ClientIp = $request.headers.'client-ip'
                 UserAgent = $request.headers.'user-agent'
                 Platform = $request.headers.'sec-ch-ua-platform'
-                slug = $urlObject.RowKey
+                slug = [string]$urlObject.RowKey
             }
             Add-AzDataTableEntity -Entity $visit -context $visitsTableContext
 
