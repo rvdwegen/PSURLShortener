@@ -5,17 +5,14 @@ function Invoke-URLRedirect {
     try {
         Connect-AzAccount -Identity | Out-Null
         $urlTableContext = New-AzDataTableContext -TableName 'shorturls' -StorageAccountName 'stourlshort' -ManagedIdentity
-        Write-Host "here1"
     } catch {
         throw "Failed to authenticate to Azure using the function app identity: $($_.Exception.Message)"
     }
 
     try {
-        Write-Host "here2"
         $urlObject = (Get-AzDataTableEntity -Filter "RowKey eq '$($Request.Params.URLslug)'" -context $urlTableContext)
 
         if ($urlObject) {
-            Write-Host "here3"
             # Increase visit count
             $urlObject.visitors++
             Update-AzDataTableEntity -Entity $urlObject -context $urlTableContext
@@ -26,9 +23,7 @@ function Invoke-URLRedirect {
                 Headers     = @{ Location = $urlObject.originalURL }
                 Body        = ''
             }
-            Write-Host "here4"
         } else {
-
             # Get the notfound HTML content
             $data = Get-Content -Path 'C:\home\site\wwwroot\Resources\notfound.html' -Raw
             $data = $data.Replace('{URLSLUG}',$($Request.Params.URLslug))
@@ -40,15 +35,13 @@ function Invoke-URLRedirect {
             }
         }
     } catch {
-        Write-Host $_.Exception.Message
+        throw $_.Exception.Message
     }
-    Write-Host "here5"
+
     # Associate values to output bindings by calling 'Push-OutputBinding'.
     Push-OutputBinding -Name Response -Value (
         $httpResponse
     )
-    Write-Host "here6"
-
 }
 
 Export-ModuleMember -Function @('Invoke-URLRedirect')
