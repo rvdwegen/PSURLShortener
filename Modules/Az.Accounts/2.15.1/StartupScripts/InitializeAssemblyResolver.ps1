@@ -1,4 +1,4 @@
-﻿$assemblyRootPath = [System.IO.Path]::Combine($PSScriptRoot, "..", "lib")
+$assemblyRootPath = [System.IO.Path]::Combine($PSScriptRoot, "..", "lib")
 Write-Debug "Initializing ConditionalAssemblyContext. PSEdition is [$($PSVersionTable.PSEdition)]. PSVersion is [$($PSVersionTable.PSVersion)]."
 $conditionalAssemblyContext = [Microsoft.Azure.PowerShell.AssemblyLoading.ConditionalAssemblyContext]::new($PSVersionTable.PSEdition, $PSVersionTable.PSVersion)
 Write-Debug "Initializing ConditionalAssemblyProvider. AssemblyRootPath is [$assemblyRootPath]."
