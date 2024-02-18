@@ -36,8 +36,8 @@ function Invoke-URLRedirect {
         if ($urlObject) {
             Write-Host "here3"
             # Increase visit count
-            #$urlObject.visitors++
-            #Update-AzDataTableEntity -Entity $urlObject -context $urlTableContext
+            $urlObject.visitors++
+            Update-AzDataTableEntity -Entity $urlObject -context $urlTableContext
 
             # Give a 302 response back
             $httpResponse = [HttpResponseContext]@{
@@ -58,7 +58,6 @@ function Invoke-URLRedirect {
                 Body        = $data #"<html><body>Code $($Request.Params.URLslug) could not be matched to a stored URL</body></html>"
             }
         }
-
     } catch {
         Write-Host $_.Exception.Message
     }
@@ -68,6 +67,7 @@ function Invoke-URLRedirect {
         $httpResponse
     )
     Write-Host "here6"
+    
 }
 
 Export-ModuleMember -Function @('Receive-HttpTrigger', 'Invoke-URLRedirect')
