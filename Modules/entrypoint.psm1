@@ -2,9 +2,10 @@ function Receive-HttpTrigger {
     Param($Request, $TriggerMetadata)
 
     Set-Location (Get-Item $PSScriptRoot).Parent.Parent.FullName
-    Write-Host (Get-Item $PSScriptRoot).Parent.Parent.FullName
+    Write-Host "loc: $((Get-Item $PSScriptRoot).Parent.Parent.FullName)"
 
-    $FunctionName = 'Invoke-URLRedirect'
+    $APIName = $TriggerMetadata.FunctionName
+    $FunctionName = 'Invoke-{0}' -f $APIName
 
     $HttpTrigger = @{
         Request         = $Request
