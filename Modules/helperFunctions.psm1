@@ -3,11 +3,11 @@ function Invoke-URLRedirect {
     param($Request, $TriggerMetadata)
     
     try {
-        Connect-AzAccount -Identity
+        Connect-AzAccount -Identity | Out-Null
         $urlTableContext = New-AzDataTableContext -TableName 'shorturls' -StorageAccountName 'stourlshort' -ManagedIdentity
         Write-Host "here1"
     } catch {
-        throw $_.Exception.Message
+        throw "Failed to authenticate to Azure using the function app identity: $($_.Exception.Message)"
     }
 
     try {

@@ -11,7 +11,11 @@ function Receive-HttpTrigger {
         TriggerMetadata = $TriggerMetadata
     }
 
-    & $FunctionName @HttpTrigger
+    try {
+        & $FunctionName @HttpTrigger
+    } catch {
+        throw "Failed to execute URL redirect: $($_.Exception.Message)"
+    }
 }
 
 Export-ModuleMember -Function @('Receive-HttpTrigger')
