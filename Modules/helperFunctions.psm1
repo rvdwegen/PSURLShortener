@@ -16,11 +16,11 @@ function Invoke-URLRedirect {
             $visitsTableContext = New-AzDataTableContext -TableName 'visits' -StorageAccountName 'stourlshort' -ManagedIdentity
             $visit = @{
                 PartitionKey = "VISIT"
-                RowKey = (New-Guid).Guid
+                RowKey = [string](New-Guid).Guid
                 ClientIp = $request.headers.'client-ip'
                 UserAgent = $request.headers.'user-agent'
                 Platform = $request.headers.'sec-ch-ua-platform'
-                slug = $urlObject.slug
+                slug = $urlObject.RowKey
             }
             Add-AzDataTableEntity -Entity $visit -context $visitsTableContext
 
