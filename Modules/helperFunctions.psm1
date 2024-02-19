@@ -2,7 +2,7 @@ function Invoke-URLRedirect {
     # Input bindings are passed in via param block.
     param($Request, $TriggerMetadata)
     
-    $Request.HttpContext
+    $Request.Headers['x-ms-client-principal']
 
     try {
         Connect-AzAccount -Identity | Out-Null
