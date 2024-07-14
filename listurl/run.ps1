@@ -12,6 +12,7 @@ try {
     Connect-AzAccount -Identity
     $urlTableContext = New-AzDataTableContext -TableName 'shorturls' -StorageAccountName 'stourlshort' -ManagedIdentity
 } catch {
+    $StatusCode = [HttpStatusCode]::NotFound
     throw $_.Exception.Message
 }
 
@@ -20,6 +21,7 @@ try {
     $result = (Get-AzDataTableEntity -context $urlTableContext)
 
 } catch {
+    $StatusCode = [HttpStatusCode]::BadRequest
     throw $_.Exception.Message
 }
 
