@@ -19,7 +19,7 @@ try {
     if ($Request.body.slug) {
         $slug = $Request.body.slug
     } else {
-        $slug = (("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789").ToCharArray() | Get-Random -Count 4) -Join ""
+        $slug = (("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789").ToCharArray() | Get-Random -Count 6) -Join ""
     }
 
     if (!$Request.body.url) {
