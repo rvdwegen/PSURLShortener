@@ -16,18 +16,32 @@ try {
 }
 
 try {
-    # Determine if we need to generate a slug
-    if ($Request.Query.slug) {
-        $slug = $Request.Query.slug
+    if ($Request.body.slug) {
+        $slug = $Request.body.slug
     } else {
         $slug = (("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789").ToCharArray() | Get-Random -Count 4) -Join ""
     }
+
+    if (!$Request.body.url) {
+        throw "no url lol"
+    }
+} catch {
+    throw $_.Exception.Message
+}
+
+try {
+    # # Determine if we need to generate a slug
+    # if ($Request.Query.slug) {
+    #     $slug = $Request.Query.slug
+    # } else {
+    #     $slug = (("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789").ToCharArray() | Get-Random -Count 4) -Join ""
+    # }
 
     # Define the hashtable
     $result = @{
         PartitionKey = "URL"
         RowKey = $slug
-        originalURL = $Request.Query.URL
+        originalURL = $Request.body.url
         shortURL = "https://short.vdwegen.app/$slug"
         slug = $slug
         visitors = 0
