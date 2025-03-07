@@ -13,7 +13,7 @@
         "type": "table",
         "name": "shorturls",
         "tableName": "shorturls",
-        "connection": "AzureWebJobsStorage",
+        "connection": "AzureWebJobsStorage2",
         "direction": "out"
       },
       {
