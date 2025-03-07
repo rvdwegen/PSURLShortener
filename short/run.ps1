@@ -5,9 +5,6 @@ param($Request, $TriggerMetadata)
 
 $StatusCode = [HttpStatusCode]::OK
 
-# account for multi-link creation
-# filter for doubles before pushing to storage and returning data
-
 try {
     $urlTableContext = $ShortURLsTableContext
     #$urlTableContext = New-TableContext -TableName 'shorturls'
@@ -36,7 +33,6 @@ try {
         RowKey = $slug
         originalURL = $Request.body.url
         shortURL = "https://short.vdwegen.app/$slug"
-        slug = $slug
         visitors = 0
     }
 
