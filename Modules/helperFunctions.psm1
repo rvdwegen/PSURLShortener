@@ -36,7 +36,7 @@ function Invoke-URLRedirect {
         } else {
             # Get the notfound HTML content
             $datapath = (Join-Path -Path (Resolve-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath "..\Resources")) -ChildPath "notfound2.html")
-            Write-Host "function dir var: $($data)"
+            Write-Host "function dir var: $($datapath)"
             $data = Get-Content -Path 'C:\home\site\wwwroot\Resources\notfound2.html' -Raw
             $data = $data.Replace('{slugVariable}',$($Request.Params.URLslug))
 
