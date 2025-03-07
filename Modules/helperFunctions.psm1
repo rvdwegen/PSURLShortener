@@ -12,16 +12,9 @@ function Invoke-URLRedirect {
     # Input bindings are passed in via param block.
     param($Request, $TriggerMetadata)
 
-    # try {
-    #     Connect-AzAccount -Identity | Out-Null
-    # } catch {
-    #     throw "Failed to authenticate to Azure using the function app identity: $($_.Exception.Message)"
-    # }
-
     $urlTableContext = New-TableContext -TableName 'shorturls'
 
     try {
-        #$urlTableContext = New-AzDataTableContext -TableName 'shorturls' -StorageAccountName 'stourlshort' -ManagedIdentity
         $urlObject = (Get-AzDataTableEntity -Filter "RowKey eq '$($Request.Params.URLslug)'" -context $urlTableContext)
 
         if ($urlObject) {
@@ -53,11 +46,10 @@ function Invoke-URLRedirect {
     Push-OutputBinding -Name Response -Value (
         $httpResponse
     )
-    
+
     Write-Host "after output"
     if ($count) {
         $visitsTableContext = New-TableContext -TableName 'visits'
-        #$visitsTableContext = New-AzDataTableContext -TableName 'visits' -StorageAccountName 'stourlshort' -ManagedIdentity
         $visit = @{
             PartitionKey = $urlObject.RowKey
             RowKey = [string](New-Guid).Guid
