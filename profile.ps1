@@ -15,6 +15,8 @@ using namespace System.Net
 Import-Module '.\Modules\AzBobbyTables'
 Import-Module '.\Modules\helperFunctions.psm1'
 
+$global:ShortURLsTableContext = New-TableContext -TableName 'shorturls'
+
 $ProgressPreference = 'SilentlyContinue'
 
 try {

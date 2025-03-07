@@ -10,13 +10,6 @@
         ]
       },
       {
-        "type": "table",
-        "name": "shorturls2",
-        "tableName": "shorturls",
-        "connection": "AzureWebJobsStorage",
-        "direction": "out"
-      },
-      {
         "type": "http",
         "direction": "out",
         "name": "Response"

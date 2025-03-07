@@ -9,7 +9,8 @@ $StatusCode = [HttpStatusCode]::OK
 # filter for doubles before pushing to storage and returning data
 
 try {
-    $urlTableContext = New-TableContext -TableName 'shorturls'
+    $urlTableContext = $ShortURLsTableContext
+    #$urlTableContext = New-TableContext -TableName 'shorturls'
 } catch {
     throw $_.Exception.Message
 }
@@ -44,24 +45,7 @@ try {
     if ($urlObject) {
         $StatusCode  = [HttpStatusCode]::BadRequest
     } else {
-        #Add-AzDataTableEntity -Entity $result -context $urlTableContext
-
-        Write-Host "Write directly to aztable"
-        try {
-            $result | fl
-            #Push-OutputBinding -Name 'shorturls2' -Value $result
-
-            Push-OutputBinding -Name shorturls2 -Value @{
-                PartitionKey = 'URL'
-                RowKey = $slug
-                originalURL = $Request.body.url
-                shortURL = "https://short.vdwegen.app/$slug"
-                slug = $slug
-                visitors = 0
-            }
-        } catch {
-            throw $_.Exception.Message
-        }
+        Add-AzDataTableEntity -Entity $result -context $urlTableContext
 
         $result.Remove('PartitionKey')
         $result.Remove('RowKey')
