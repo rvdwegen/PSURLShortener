@@ -17,10 +17,8 @@ $StatusCode = [HttpStatusCode]::OK
 # }
 
 try {
-
     $urlTableContext = $ShortURLsTableContext
     $result = (Get-AzDataTableEntity -context $urlTableContext)
-
 } catch {
     $StatusCode = [HttpStatusCode]::BadRequest
     throw $_.Exception.Message

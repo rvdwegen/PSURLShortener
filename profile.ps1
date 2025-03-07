@@ -15,10 +15,6 @@ using namespace System.Net
 Import-Module '.\Modules\AzBobbyTables'
 Import-Module '.\Modules\helperFunctions.psm1'
 
-Write-Host "Profile"
-$global:ShortURLsTableContext = New-TableContext -TableName 'shorturls'
-Write-Host "Profile $($ShortURLsTableContext)"
-
 $ProgressPreference = 'SilentlyContinue'
 
 try {

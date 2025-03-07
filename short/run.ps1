@@ -6,10 +6,9 @@ param($Request, $TriggerMetadata)
 $StatusCode = [HttpStatusCode]::OK
 
 try {
-    $urlTableContext = $ShortURLsTableContext
-    #$urlTableContext = New-TableContext -TableName 'shorturls'
+    $urlTableContext = New-TableContext -TableName 'shorturls'
 } catch {
-    throw $_.Exception.Message
+    throw "Failed to create table context $($_.Exception.Message)"
 }
 
 try {

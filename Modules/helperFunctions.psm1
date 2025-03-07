@@ -18,8 +18,7 @@ function Invoke-URLRedirect {
     #     throw "Failed to authenticate to Azure using the function app identity: $($_.Exception.Message)"
     # }
 
-    $urlTableContext = $global:ShortURLsTableContext
-    #$urlTableContext = New-TableContext -TableName 'shorturls'
+    $urlTableContext = New-TableContext -TableName 'shorturls'
 
     try {
         #$urlTableContext = New-AzDataTableContext -TableName 'shorturls' -StorageAccountName 'stourlshort' -ManagedIdentity
