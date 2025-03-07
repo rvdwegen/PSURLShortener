@@ -4,20 +4,9 @@ using namespace System.Net
 param($Request, $TriggerMetadata)
 
 $StatusCode = [HttpStatusCode]::OK
-
-# account for multi-link creation
-# filter for doubles before pushing to storage and returning data
-
-# try {
-#     #Connect-AzAccount -Identity
-#     #$urlTableContext = New-AzDataTableContext -TableName 'shorturls' -StorageAccountName 'stourlshort' -ManagedIdentity
-# } catch {
-#     $StatusCode = [HttpStatusCode]::NotFound
-#     throw $_.Exception.Message
-# }
-
+ 
 try {
-    $urlTableContext = $ShortURLsTableContext
+    $urlTableContext = New-TableContext -TableName 'shorturls'
     $result = (Get-AzDataTableEntity -context $urlTableContext)
 } catch {
     $StatusCode = [HttpStatusCode]::BadRequest
