@@ -51,7 +51,7 @@ try {
             $result | fl
             #Push-OutputBinding -Name 'shorturls2' -Value $result
 
-            Push-OutputBinding -Name TableBinding -Value @{
+            Push-OutputBinding -Name shorturls2 -Value @{
                 PartitionKey = 'Test'
                 RowKey = "1"
                 Name = "Name 1"
