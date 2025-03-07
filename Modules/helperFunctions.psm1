@@ -47,7 +47,7 @@ function Invoke-URLRedirect {
             }
         }
     } catch {
-        throw $_.Exception.Message
+        throw "Error on line $($_.InvocationInfo.ScriptLineNumber): $($_.Exception.Message)"
     }
 
     # Associate values to output bindings by calling 'Push-OutputBinding'.
