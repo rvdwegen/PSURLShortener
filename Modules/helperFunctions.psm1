@@ -18,7 +18,7 @@ function Invoke-URLRedirect {
     #     throw "Failed to authenticate to Azure using the function app identity: $($_.Exception.Message)"
     # }
 
-    $urlTableContext = $ShortURLsTableContext
+    $urlTableContext = $global:ShortURLsTableContext
     #$urlTableContext = New-TableContext -TableName 'shorturls'
 
     try {
