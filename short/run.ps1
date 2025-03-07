@@ -48,7 +48,14 @@ try {
 
         Write-Host "Write directly to aztable"
         try {
-            Push-OutputBinding -Name shorturls -Value $result
+            $result | fl
+            #Push-OutputBinding -Name 'shorturls2' -Value $result
+
+            Push-OutputBinding -Name TableBinding -Value @{
+                PartitionKey = 'Test'
+                RowKey = "1"
+                Name = "Name 1"
+            }
         } catch {
             throw $_.Exception.Message
         }
