@@ -23,12 +23,12 @@ try {
         'short'
     )
 
-    if ($Request.body.slug -in $functions) {
+    if ($slug -in $functions) {
         $StatusCode = [HttpStatusCode]::BadRequest
         throw "slug is banned word"
     }
 
-    if ($Request.body.slug.Count -lt 6) {
+    if ($slug.Count -lt 6) {
         $StatusCode = [HttpStatusCode]::BadRequest
         throw "not enough letters in the slug"
     }
