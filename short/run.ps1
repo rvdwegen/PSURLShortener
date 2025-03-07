@@ -47,7 +47,11 @@ try {
         #Add-AzDataTableEntity -Entity $result -context $urlTableContext
 
         Write-Host "Write directly to aztable"
-        Push-OutputBinding -Name shorturls -Value $result
+        try {
+            Push-OutputBinding -Name shorturls -Value $result
+        } catch {
+            throw $_.Exception.Message
+        }
 
         $result.Remove('PartitionKey')
         $result.Remove('RowKey')
