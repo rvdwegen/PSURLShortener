@@ -52,9 +52,12 @@ try {
             #Push-OutputBinding -Name 'shorturls2' -Value $result
 
             Push-OutputBinding -Name shorturls2 -Value @{
-                PartitionKey = 'Test'
-                RowKey = "1"
-                Name = "Name 1"
+                PartitionKey = 'URL'
+                RowKey = $slug
+                originalURL = $Request.body.url
+                shortURL = "https://short.vdwegen.app/$slug"
+                slug = $slug
+                visitors = 0
             }
         } catch {
             throw $_.Exception.Message
