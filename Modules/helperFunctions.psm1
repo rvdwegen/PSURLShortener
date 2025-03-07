@@ -53,24 +53,24 @@ function Invoke-URLRedirect {
     Push-OutputBinding -Name Response -Value (
         $httpResponse
     )
+    
+    Write-Host "after output"
+    if ($count) {
+        $visitsTableContext = New-TableContext -TableName 'visits'
+        #$visitsTableContext = New-AzDataTableContext -TableName 'visits' -StorageAccountName 'stourlshort' -ManagedIdentity
+        $visit = @{
+            PartitionKey = $urlObject.RowKey
+            RowKey = [string](New-Guid).Guid
+            ClientIp = $request.headers.'client-ip'
+            UserAgent = $request.headers.'user-agent'
+            Platform = $request.headers.'sec-ch-ua-platform'
+        }
+        Add-AzDataTableEntity -Entity $visit -context $visitsTableContext
 
-    # if ($count) {
-    #     $visitsTableContext = New-TableContext -TableName 'visits'
-    #     #$visitsTableContext = New-AzDataTableContext -TableName 'visits' -StorageAccountName 'stourlshort' -ManagedIdentity
-    #     $visit = @{
-    #         PartitionKey = "VISIT"
-    #         RowKey = [string](New-Guid).Guid
-    #         ClientIp = $request.headers.'client-ip'
-    #         UserAgent = $request.headers.'user-agent'
-    #         Platform = $request.headers.'sec-ch-ua-platform'
-    #         slug = $urlObject.RowKey
-    #     }
-    #     Add-AzDataTableEntity -Entity $visit -context $visitsTableContext
-
-    #     # Increase visit count
-    #     $urlObject.visitors++
-    #     Update-AzDataTableEntity -Entity $urlObject -context $urlTableContext
-    # }
+        # Increase visit count
+        $urlObject.visitors++
+        Update-AzDataTableEntity -Entity $urlObject -context $urlTableContext
+    }
 }
 
 Export-ModuleMember -Function @('Invoke-URLRedirect', 'New-TableContext')
