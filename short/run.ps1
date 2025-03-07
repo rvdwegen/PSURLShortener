@@ -10,9 +10,6 @@ $StatusCode = [HttpStatusCode]::OK
 
 try {
     $urlTableContext = New-TableContext -TableName 'shorturls'
-
-    #Connect-AzAccount -Identity
-    #$urlTableContext = New-AzDataTableContext -TableName 'shorturls' -StorageAccountName 'stourlshort' -ManagedIdentity
 } catch {
     throw $_.Exception.Message
 }
@@ -32,13 +29,6 @@ try {
 }
 
 try {
-    # # Determine if we need to generate a slug
-    # if ($Request.Query.slug) {
-    #     $slug = $Request.Query.slug
-    # } else {
-    #     $slug = (("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789").ToCharArray() | Get-Random -Count 4) -Join ""
-    # }
-
     # Define the hashtable
     $result = @{
         PartitionKey = "URL"
@@ -54,7 +44,10 @@ try {
     if ($urlObject) {
         $StatusCode  = [HttpStatusCode]::BadRequest
     } else {
-        Add-AzDataTableEntity -Entity $result -context $urlTableContext
+        #Add-AzDataTableEntity -Entity $result -context $urlTableContext
+
+        Write-Host "Write directly to aztable"
+        Push-OutputBinding -Name shorturls -Value $result
 
         $result.Remove('PartitionKey')
         $result.Remove('RowKey')
