@@ -35,14 +35,14 @@ function Invoke-URLRedirect {
             $count = $true
         } else {
             # Get the notfound HTML content
+            Write-Host "function dir var: $($EXECUTION_CONTEXT_FUNCTIONDIRECTORY)"
             $data = Get-Content -Path 'C:\home\site\wwwroot\Resources\notfound2.html' -Raw
             $data = $data.Replace('{slugVariable}',$($Request.Params.URLslug))
 
             $httpResponse = [HttpResponseContext]@{
                 StatusCode  = [HttpStatusCode]::OK
-                #StatusCode  = [HttpStatusCode]::NotFound
                 Headers     = @{ 'content-type' = 'text/html' }
-                Body        = $data #"<html><body>Code $($Request.Params.URLslug) could not be matched to a stored URL</body></html>"
+                Body        = $data
             }
         }
     } catch {
