@@ -9,8 +9,10 @@ $StatusCode = [HttpStatusCode]::OK
 # filter for doubles before pushing to storage and returning data
 
 try {
-    Connect-AzAccount -Identity
-    $urlTableContext = New-AzDataTableContext -TableName 'shorturls' -StorageAccountName 'stourlshort' -ManagedIdentity
+    $urlTableContext = New-TableContext -TableName 'shorturls'
+
+    #Connect-AzAccount -Identity
+    #$urlTableContext = New-AzDataTableContext -TableName 'shorturls' -StorageAccountName 'stourlshort' -ManagedIdentity
 } catch {
     throw $_.Exception.Message
 }

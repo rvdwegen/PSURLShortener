@@ -3,6 +3,7 @@ function Receive-HttpTrigger {
 
     Set-Location (Get-Item $PSScriptRoot).Parent.Parent.FullName
     Write-Host "loc: $((Get-Item $PSScriptRoot).Parent.Parent.FullName)"
+    Write-Host "Functionname is $($TriggerMetadata.FunctionName)"
 
     $APIName = $TriggerMetadata.FunctionName
     $FunctionName = 'Invoke-{0}' -f $APIName
