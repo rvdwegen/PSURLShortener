@@ -3,15 +3,20 @@ using namespace System.Net
 # Input bindings are passed in via param block.
 param($Request, $TriggerMetadata)
 
-$StatusCode = [HttpStatusCode]::OK
-
-try {
-    $urlTableContext = New-TableContext -TableName 'shorturls'
-} catch {
-    throw "Failed to create table context $($_.Exception.Message)"
+if ($Request.body.slug) {
+    $slug = $Request.body.slug
+} else {
+    $slug = (("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789").ToCharArray() | Get-Random -Count 6) -Join ""
 }
 
 try {
+    try {
+        $urlTableContext = New-TableContext -TableName 'shorturls'
+    } catch {
+        $StatusCode = [HttpStatusCode]::InternalServerError
+        throw "Failed to create table context $($_.Exception.Message)"
+    }
+
     $functions = @(
         'URLRedirect',
         'listurl',
@@ -19,46 +24,46 @@ try {
     )
 
     if ($Request.body.slug -in $functions) {
-        throw "banned word"
+        $StatusCode = [HttpStatusCode]::BadRequest
+        throw "slug is banned word"
     }
 
-    if ($Request.body.slug) {
-        $slug = $Request.body.slug
-    } else {
-        $slug = (("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789").ToCharArray() | Get-Random -Count 6) -Join ""
+    if ($Request.body.slug.Count -lt 6) {
+        $StatusCode = [HttpStatusCode]::BadRequest
+        throw "not enough letters in the slug"
     }
 
-    if (!$Request.body.url) {
+    if (-Not $Request.body.url) {
+        $StatusCode = [HttpStatusCode]::BadRequest
         throw "no url lol"
-    }
-} catch {
-    throw $_.Exception.Message
-}
-
-try {
-    # Define the hashtable
-    $result = @{
-        PartitionKey = "URL"
-        RowKey = $slug
-        originalURL = $Request.body.url
-        shortURL = "https://short.vdwegen.app/$slug"
-        visitors = 0
     }
 
     $urlObject = (Get-AzDataTableEntity -Filter "RowKey eq '$($slug)'" -context $urlTableContext)
-
     if ($urlObject) {
         $StatusCode  = [HttpStatusCode]::BadRequest
-    } else {
+        throw "Slug already exists"
+    }
+
+    try {
+        $result = @{
+            PartitionKey = "URL"
+            RowKey = $slug
+            originalURL = $Request.body.url
+            shortURL = "https://short.vdwegen.app/$slug"
+            visitors = 0
+        }
+    
         Add-AzDataTableEntity -Entity $result -context $urlTableContext
 
         $result.Remove('PartitionKey')
         $result.Remove('RowKey')
         $result.Remove('visitors')
+    } catch {
+        $StatusCode = [HttpStatusCode]::InternalServerError
+        throw "Failed to write to table: $($_.Exception.Message)"  
     }
-
 } catch {
-    throw $_.Exception.Message
+    $Result = $_.Exception.Message
 }
 
 # Associate values to output bindings by calling 'Push-OutputBinding'.
