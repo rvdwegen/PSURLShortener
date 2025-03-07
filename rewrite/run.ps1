@@ -3,6 +3,8 @@ using namespace System.Net
 # Input bindings are passed in via param block.
 param($Request, $TriggerMetadata)
 
+$StatusCode = [HttpStatusCode]::OK
+
 $Request.query.path
 
 $Request | fl
