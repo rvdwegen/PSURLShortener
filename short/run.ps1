@@ -12,6 +12,16 @@ try {
 }
 
 try {
+    $functions = @(
+        'URLRedirect',
+        'listurl',
+        'short'
+    )
+
+    if ($Request.body.slug -in $functions) {
+        throw "banned word"
+    }
+
     if ($Request.body.slug) {
         $slug = $Request.body.slug
     } else {
