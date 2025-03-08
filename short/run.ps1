@@ -30,7 +30,7 @@ try {
 
     if ($slug.Count -lt 6) {
         $StatusCode = [HttpStatusCode]::BadRequest
-        throw "not enough letters in the slug"
+        throw "not enough letters in the slug $($Slug)"
     }
 
     if (-Not $Request.body.url) {
