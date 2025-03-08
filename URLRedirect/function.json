@@ -8,7 +8,7 @@
             "direction": "in",
             "name": "Request",
             "methods": ["get"],
-            "route": "/api/{URLslug}"
+            "route": "{URLslug}"
         },
         {
             "type": "http",
