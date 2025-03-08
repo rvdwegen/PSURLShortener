@@ -28,7 +28,7 @@ try {
         throw "slug $($Slug) is banned word"
     }
 
-    if ($slug.Count -lt 6) {
+    if ($slug.Length -lt 6) {
         $StatusCode = [HttpStatusCode]::BadRequest
         throw "not enough letters in the slug $($Slug)"
     }
