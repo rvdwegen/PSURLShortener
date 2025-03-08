@@ -54,7 +54,7 @@ try {
         }
     
         Add-AzDataTableEntity -Entity $result -context $urlTableContext
-
+        $StatusCode = [HttpStatusCode]::OK
         $result.Remove('PartitionKey')
         $result.Remove('RowKey')
         $result.Remove('visitors')
@@ -63,7 +63,7 @@ try {
         throw "Failed to write to table: $($_.Exception.Message)"  
     }
 } catch {
-    $Result = $_.Exception.Message
+    $Result = @{ message = $($_.Exception.Message) }
 }
 
 # Associate values to output bindings by calling 'Push-OutputBinding'.
