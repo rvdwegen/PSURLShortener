@@ -70,7 +70,7 @@ try {
         }
         'DELETE' {
             Write-Host "link is $($Request.Headers.'x-ms-original-url')"
-            $Slug = ([uri]$Request.Headers.'x-ms-original-url').Segments[2]
+            $Slug = ([uri]$Request.Headers.'x-ms-original-url').Segments[3]
 
             $urlObject = (Get-AzDataTableEntity -Filter "RowKey eq '$($slug)'" -context $urlTableContext)
             $urlObject | Remove-AzDataTableEntity -context $urlTableContext
