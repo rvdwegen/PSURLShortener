@@ -23,7 +23,7 @@ try {
         # Get the notfound HTML content
         $datapath = (Join-Path -Path (Resolve-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath "..\Resources")) -ChildPath "notfound2.html")
         $data = Get-Content -Path $datapath -Raw
-        $data = $data.Replace('{slugVariable}',$($Request.Params.URLslug))
+        $data = $data.Replace('{slugVariable}',$($Slug))
 
         $httpResponse = [HttpResponseContext]@{
             StatusCode  = [HttpStatusCode]::OK
