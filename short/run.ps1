@@ -49,7 +49,7 @@ try {
             PartitionKey = "URL"
             RowKey = $slug
             originalURL = $Request.body.url
-            shortURL = "https://short.vdwegen.app/$slug"
+            shortURL = "https://short.vdwegen.app/$slug" # don't hardcode the url
             visitors = 0
         }
     
