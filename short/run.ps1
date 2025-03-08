@@ -25,7 +25,7 @@ try {
 
     if ($slug -in $functions) {
         $StatusCode = [HttpStatusCode]::BadRequest
-        throw "slug is banned word"
+        throw "slug $($Slug) is banned word"
     }
 
     if ($slug.Count -lt 6) {
@@ -41,7 +41,7 @@ try {
     $urlObject = (Get-AzDataTableEntity -Filter "RowKey eq '$($slug)'" -context $urlTableContext)
     if ($urlObject) {
         $StatusCode  = [HttpStatusCode]::BadRequest
-        throw "Slug already exists"
+        throw "Slug $($Slug) already exists"
     }
 
     try {
