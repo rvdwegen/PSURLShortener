@@ -6,7 +6,9 @@
         "direction": "in",
         "name": "Request",
         "methods": [
-          "post"
+          "post",
+          "patch",
+          "delete"
         ]
       },
       {

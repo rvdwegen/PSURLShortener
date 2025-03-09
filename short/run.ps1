@@ -66,7 +66,7 @@ try {
             }
         }
         'PATCH' {
-    
+            $urlObject = (Get-AzDataTableEntity -Filter "RowKey eq '$($slug)'" -context $urlTableContext)
         }
         'DELETE' {
             Write-Host "link is $($Request.Headers.'x-ms-original-url')"
