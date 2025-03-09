@@ -48,7 +48,7 @@ if ($count) {
     $visit = @{
         PartitionKey = $urlObject.RowKey
         RowKey = [string](New-Guid).Guid
-        ClientIp = ($Request.Headers.'X-Forwarded-For').Split(',')[0].Trim() #$request.headers.'client-ip'
+        ClientIp = (($Request.Headers.'X-Forwarded-For').Split(',')[0].Trim() -split ':')[0] #$request.headers.'client-ip'
         UserAgent = $request.headers.'user-agent'
         Platform = $request.headers.'sec-ch-ua-platform'
     }
