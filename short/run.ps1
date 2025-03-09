@@ -53,6 +53,7 @@ try {
                     originalURL = $Request.body.url
                     shortURL = "https://short.vdwegen.app/$slug" # don't hardcode the url
                     visitors = 0
+                    CreatedOn = Get-Date #(Get-Date).ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss.fffffffK")
                 }
             
                 Add-AzDataTableEntity -Entity $result -context $urlTableContext
