@@ -42,6 +42,9 @@ Push-OutputBinding -Name Response -Value (
 
 Write-Host "after output"
 if ($count) {
+
+    Write-Host "$($Request.Headers.'X-Forwarded-For') | $($request.headers.'client-ip')"
+
     $visitsTableContext = New-TableContext -TableName 'visits'
     $visit = @{
         PartitionKey = $urlObject.RowKey
