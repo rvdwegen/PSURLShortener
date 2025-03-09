@@ -51,6 +51,7 @@ if ($count) {
         ClientIp = (($Request.Headers.'X-Forwarded-For').Split(',')[0].Trim() -split ':')[0] #$request.headers.'client-ip'
         UserAgent = $request.headers.'user-agent'
         Platform = $request.headers.'sec-ch-ua-platform'
+        Referer = $Request.headers.referer
         Raw = [string]($Request | ConvertTo-Json -Compress -Depth 20)
         #Raw = [string]($Request.Headers | ConvertTo-Json -Compress -Depth 20)
     }
