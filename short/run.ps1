@@ -73,6 +73,8 @@ try {
 
             $urlObject = (Get-AzDataTableEntity -Filter "RowKey eq '$($slug)'" -context $urlTableContext)
             $urlObject | Remove-AzDataTableEntity -context $urlTableContext
+
+            $StatusCode = [HttpStatusCode]::NoContent
         }
         Default {}
     }
