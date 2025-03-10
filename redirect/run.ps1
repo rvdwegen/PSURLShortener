@@ -44,6 +44,11 @@ Write-Host "$($slug) / $($Domain) / $ExpiryDate "
             })
         }
     }
+
+    if ($ExpiryDate -gt (Get-Date)) {
+        Write-Hoat "Deleting $($urlObject.RowKey) because the expiryDate is $($urlObject.ExpiryDate)"
+        $urlObject | Remove-AzDataTableEntity
+    }
 } catch {
     throw "Error on line $($_.InvocationInfo.ScriptLineNumber): $($_.Exception.Message)"
 }
