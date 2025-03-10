@@ -9,7 +9,9 @@ $Slug = ([uri]$Request.Headers.'x-ms-original-url').Segments[1]
 $urlTableContext = New-TableContext -TableName 'shorturls'
 
 try {
+    Write-Host "slug is $($slug)"
     $urlObject = (Get-AzDataTableEntity -Filter "slug eq '$($Slug)'" -context $urlTableContext)
+    $urlObject | FL
     $urlDomains = ConvertFrom-Json -InputObject $urlObject.domains
 
     Write-Host "$($slug) / $($Domain)"
