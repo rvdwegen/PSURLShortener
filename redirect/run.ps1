@@ -43,7 +43,7 @@ try {
         }
     }
 
-    if ($ExpiryDate -lt (Get-Date)) {
+    if ($ExpiryDate -AND $ExpiryDate -lt (Get-Date)) {
         Write-Host "Deleting $($urlObject.RowKey) because the expiryDate is $($urlObject.ExpiryDate)"
         $urlObject | Remove-AzDataTableEntity -Context $urlTableContext
     }
