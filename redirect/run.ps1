@@ -12,14 +12,12 @@ try {
     Write-Host "slug is $($slug)"
     $urlObject = (Get-AzDataTableEntity -Filter "slug eq '$($Slug)'" -context $urlTableContext)
     if ($urlObject) {
-        $urlObject | FL
 
         $urlDomains = ConvertFrom-Json -InputObject $urlObject.domains
         $ExpiryDate = $urlObject.ExpiryDate
 
-Write-Host "$($slug) / $($Domain) / $ExpiryDate "
+        Write-Host "$($slug) / $($Domain) / $ExpiryDate "
 
-        $urlDomains
 
         if ($Domain -in $urlDomains -AND $ExpiryDate -gt (Get-Date)) {
             # Give a 302 response back
@@ -45,7 +43,7 @@ Write-Host "$($slug) / $($Domain) / $ExpiryDate "
         }
     }
 
-    if ($ExpiryDate -gt (Get-Date)) {
+    if ($ExpiryDate -lt (Get-Date)) {
         Write-Hoat "Deleting $($urlObject.RowKey) because the expiryDate is $($urlObject.ExpiryDate)"
         $urlObject | Remove-AzDataTableEntity
     }
