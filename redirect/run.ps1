@@ -11,31 +11,33 @@ $urlTableContext = New-TableContext -TableName 'shorturls'
 try {
     Write-Host "slug is $($slug)"
     $urlObject = (Get-AzDataTableEntity -Filter "slug eq '$($Slug)'" -context $urlTableContext)
-    $urlObject | FL
-    $urlDomains = ConvertFrom-Json -InputObject $urlObject.domains
+    if ($urlObject) {
+        $urlObject | FL
+        Write-Host "$($slug) / $($Domain)"
+        $urlDomains = ConvertFrom-Json -InputObject $urlObject.domains
 
-    Write-Host "$($slug) / $($Domain)"
-    $urlDomains
+        $urlDomains
 
-    if ($urlObject -AND $Domain -in $urlDomains) {
-        # Give a 302 response back
-        $httpResponse = [HttpResponseContext]@{
-            StatusCode  = [HttpStatusCode]::Found
-            Headers     = @{ Location = $urlObject.originalURL }
-            Body        = ''
-        }
-
-        $count = $true
-    } else {
-        # Get the notfound HTML content
-        $datapath = (Join-Path -Path (Resolve-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath "..\Resources")) -ChildPath "notfound2.html")
-        $data = Get-Content -Path $datapath -Raw
-        $data = $data.Replace('{slugVariable}',$($Slug))
-
-        $httpResponse = [HttpResponseContext]@{
-            StatusCode  = [HttpStatusCode]::OK
-            Headers     = @{ 'content-type' = 'text/html' }
-            Body        = $data
+        if ($Domain -in $urlDomains) {
+            # Give a 302 response back
+            $httpResponse = [HttpResponseContext]@{
+                StatusCode  = [HttpStatusCode]::Found
+                Headers     = @{ Location = $urlObject.originalURL }
+                Body        = ''
+            }
+    
+            $count = $true
+        } else {
+            # Get the notfound HTML content
+            $datapath = (Join-Path -Path (Resolve-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath "..\Resources")) -ChildPath "notfound2.html")
+            $data = Get-Content -Path $datapath -Raw
+            $data = $data.Replace('{slugVariable}',$($Slug))
+    
+            $httpResponse = [HttpResponseContext]@{
+                StatusCode  = [HttpStatusCode]::OK
+                Headers     = @{ 'content-type' = 'text/html' }
+                Body        = $data
+            }
         }
     }
 } catch {
