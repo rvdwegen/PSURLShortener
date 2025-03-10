@@ -47,10 +47,14 @@ try {
             }
 
             try {
+                $domains = "https://short.vdwegen.app"
+
                 $result = @{
                     PartitionKey = "URL"
                     RowKey = $slug
+                    slug = $slug
                     originalURL = $Request.body.url
+                    domains = ([array]($domains)) | ConvertTo-Json -Compress
                     shortURL = "https://short.vdwegen.app/$slug" # don't hardcode the url
                     visitors = 0
                     CreatedOn = [DateTime]::SpecifyKind((Get-Date), [DateTimeKind]::Utc) #(Get-Date).ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss.fffffffK")
@@ -68,6 +72,18 @@ try {
         }
         'PATCH' {
             $urlObject = (Get-AzDataTableEntity -Filter "RowKey eq '$($slug)'" -context $urlTableContext)
+
+            if ($Request.Body.Slug) {
+
+            }
+
+            if ($Request.Body.Domains) {
+
+            }
+
+            if ($Request.Body.originalURL) {
+
+            }
         }
         'DELETE' {
             $Slug = $Request.body.slug
