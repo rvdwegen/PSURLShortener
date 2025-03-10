@@ -13,12 +13,15 @@ try {
     $urlObject = (Get-AzDataTableEntity -Filter "slug eq '$($Slug)'" -context $urlTableContext)
     if ($urlObject) {
         $urlObject | FL
-        Write-Host "$($slug) / $($Domain)"
+
         $urlDomains = ConvertFrom-Json -InputObject $urlObject.domains
+        $ExpiryDate = [DateTime]$urlObject.ExpiryDate
+
+Write-Host "$($slug) / $($Domain) / $ExpiryDate "
 
         $urlDomains
 
-        if ($Domain -in $urlDomains) {
+        if ($Domain -in $urlDomains -AND $ExpiryDate -lt (Get-Date)) {
             # Give a 302 response back
             Push-OutputBinding -Name Response -Value ([HttpResponseContext]@{
                 StatusCode  = [HttpStatusCode]::Found
@@ -28,6 +31,7 @@ try {
     
             $count = $true
         } else {
+            Write-Host "$($ExpiryDate)"
             # Get the notfound HTML content
             $datapath = (Join-Path -Path (Resolve-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath "..\Resources")) -ChildPath "notfound2.html")
             $data = Get-Content -Path $datapath -Raw
