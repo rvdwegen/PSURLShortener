@@ -57,7 +57,8 @@ try {
                     domains = [string](ConvertTo-Json -InputObject $domains -Compress)
                     shortURL = "https://short.vdwegen.app/$slug" # don't hardcode the url
                     visitors = 0
-                    ExpiryDate = [DateTime]$Request.body.expiryDate
+                    #ExpiryDate = [DateTime]$Request.body.expiryDate
+                    ExpiryDate = [DateTime]::SpecifyKind(($Request.body.expiryDate), [DateTimeKind]::Utc)
                     CreatedOn = [DateTime]::SpecifyKind((Get-Date), [DateTimeKind]::Utc) #(Get-Date).ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss.fffffffK")
                     CreatedBy = $Request.Headers.'x-ms-client-principal-name'
                 }
