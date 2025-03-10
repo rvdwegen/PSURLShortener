@@ -58,7 +58,7 @@ try {
                     shortURL = "https://short.vdwegen.app/$slug" # don't hardcode the url
                     visitors = 0
                     #ExpiryDate = [DateTime]$Request.body.expiryDate
-                    ExpiryDate = [DateTime]::Parse($Request.body.expiryDate).ToUniversalTime().AddMilliseconds(1)
+                    ExpiryDate = if ($Request.body.expiryDate) { [DateTime]::Parse($Request.body.expiryDate).ToUniversalTime().AddMilliseconds(1) } else { $null }
                     CreatedOn = [DateTime]::SpecifyKind((Get-Date), [DateTimeKind]::Utc) #(Get-Date).ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss.fffffffK")
                     CreatedBy = $Request.Headers.'x-ms-client-principal-name'
                 }

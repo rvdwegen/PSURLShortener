@@ -19,7 +19,7 @@ try {
         Write-Host "$($slug) / $($Domain) / $ExpiryDate "
 
 
-        if ($Domain -in $urlDomains -AND $ExpiryDate -gt (Get-Date)) {
+        if ($Domain -in $urlDomains -AND $ExpiryDate -AND $ExpiryDate -gt (Get-Date)) {
             # Give a 302 response back
             Push-OutputBinding -Name Response -Value ([HttpResponseContext]@{
                 StatusCode  = [HttpStatusCode]::Found
