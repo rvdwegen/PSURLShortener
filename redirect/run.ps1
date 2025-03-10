@@ -15,7 +15,7 @@ try {
         $urlObject | FL
 
         $urlDomains = ConvertFrom-Json -InputObject $urlObject.domains
-        $ExpiryDate = [DateTime]$urlObject.ExpiryDate
+        $ExpiryDate = $urlObject.ExpiryDate
 
 Write-Host "$($slug) / $($Domain) / $ExpiryDate "
 
