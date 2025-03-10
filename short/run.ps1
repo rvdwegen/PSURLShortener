@@ -54,7 +54,7 @@ try {
                     RowKey = [string]((New-Guid).Guid)
                     slug = $slug
                     originalURL = $Request.body.url
-                    domains = [string]($domains | ConvertTo-Json -Compress)
+                    domains = [string](ConvertTo-Json -InputObject $domains -Compress)
                     shortURL = "https://short.vdwegen.app/$slug" # don't hardcode the url
                     visitors = 0
                     CreatedOn = [DateTime]::SpecifyKind((Get-Date), [DateTimeKind]::Utc) #(Get-Date).ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss.fffffffK")
