@@ -3,14 +3,19 @@ using namespace System.Net
 # Input bindings are passed in via param block.
 param($Request, $TriggerMetadata)
 
+$Domain = ([uri]$Request.Headers.'x-ms-original-url').Host
 $Slug = ([uri]$Request.Headers.'x-ms-original-url').Segments[1]
 
 $urlTableContext = New-TableContext -TableName 'shorturls'
 
 try {
-    $urlObject = (Get-AzDataTableEntity -Filter "RowKey eq '$($Slug)'" -context $urlTableContext)
+    $urlObject = (Get-AzDataTableEntity -Filter "slug eq '$($Slug)'" -context $urlTableContext)
+    $urlDomains = ConvertFrom-Json -InputObject $urlObject.domains
 
-    if ($urlObject) {
+    Write-Host "$($slug) / $($Domain)"
+    $urlDomains
+
+    if ($urlObject -AND $Domain -in $urlDomains) {
         # Give a 302 response back
         $httpResponse = [HttpResponseContext]@{
             StatusCode  = [HttpStatusCode]::Found

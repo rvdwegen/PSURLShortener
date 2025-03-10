@@ -47,7 +47,7 @@ try {
             }
 
             try {
-                [array]$domains = @("https://short.vdwegen.app")
+                [array]$domains = @("short.vdwegen.app")
 
                 $result = @{
                     PartitionKey = "URL"
