@@ -47,14 +47,14 @@ try {
             }
 
             try {
-                $domains = "https://short.vdwegen.app"
+                [array]$domains = @("https://short.vdwegen.app")
 
                 $result = @{
                     PartitionKey = "URL"
                     RowKey = [string]((New-Guid).Guid)
                     slug = $slug
                     originalURL = $Request.body.url
-                    domains = [string](([array]($domains)) | ConvertTo-Json -Compress)
+                    domains = [string]($domains | ConvertTo-Json -Compress)
                     shortURL = "https://short.vdwegen.app/$slug" # don't hardcode the url
                     visitors = 0
                     CreatedOn = [DateTime]::SpecifyKind((Get-Date), [DateTimeKind]::Utc) #(Get-Date).ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss.fffffffK")
