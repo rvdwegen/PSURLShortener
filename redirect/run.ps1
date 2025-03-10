@@ -33,21 +33,16 @@ try {
             $data = Get-Content -Path $datapath -Raw
             $data = $data.Replace('{slugVariable}',$($Slug))
     
-            $httpResponse = [HttpResponseContext]@{
+            Push-OutputBinding -Name Response -Value ([HttpResponseContext]@{
                 StatusCode  = [HttpStatusCode]::OK
                 Headers     = @{ 'content-type' = 'text/html' }
                 Body        = $data
-            }
+            })
         }
     }
 } catch {
     throw "Error on line $($_.InvocationInfo.ScriptLineNumber): $($_.Exception.Message)"
 }
-
-# Associate values to output bindings by calling 'Push-OutputBinding'.
-Push-OutputBinding -Name Response -Value (
-    $httpResponse
-)
 
 Write-Host "after output"
 if ($count) {
