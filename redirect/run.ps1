@@ -20,11 +20,11 @@ try {
 
         if ($Domain -in $urlDomains) {
             # Give a 302 response back
-            $httpResponse = [HttpResponseContext]@{
+            Push-OutputBinding -Name Response -Value ([HttpResponseContext]@{
                 StatusCode  = [HttpStatusCode]::Found
                 Headers     = @{ Location = $urlObject.originalURL }
                 Body        = ''
-            }
+            })
     
             $count = $true
         } else {
