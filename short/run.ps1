@@ -51,7 +51,7 @@ try {
 
                 $result = @{
                     PartitionKey = "URL"
-                    RowKey = $slug
+                    RowKey = (New-Guid).Guid
                     slug = $slug
                     originalURL = $Request.body.url
                     domains = ([array]($domains)) | ConvertTo-Json -Compress
