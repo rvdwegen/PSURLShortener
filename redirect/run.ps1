@@ -45,7 +45,7 @@ try {
 
     if ($ExpiryDate -lt (Get-Date)) {
         Write-Host "Deleting $($urlObject.RowKey) because the expiryDate is $($urlObject.ExpiryDate)"
-        $urlObject | Remove-AzDataTableEntity
+        $urlObject | Remove-AzDataTableEntity -Context $urlTableContext
     }
 } catch {
     throw "Error on line $($_.InvocationInfo.ScriptLineNumber): $($_.Exception.Message)"
