@@ -7,6 +7,8 @@ param($Request, $TriggerMetadata)
 $Domain = ([uri]$Request.Headers.'x-ms-original-url').Host
 $Slug = ([uri]$Request.Headers.'x-ms-original-url').Segments[1]
 
+Write-Host "$($Domain) / $($Slug)"
+
 # Create table context
 $urlTableContext = New-TableContext -TableName 'shorturls'
 
