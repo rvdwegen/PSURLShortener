@@ -16,6 +16,7 @@ try {
     # Check if the slug exists
     $urlObject = (Get-AzDataTableEntity -Filter "slug eq '$($Slug)'" -context $urlTableContext)
     if ($urlObject) {
+        Write-Host "Found $($urlObject.Count) slugs"
 
         # Convert the domains cell to an object
         $urlDomains = ConvertFrom-Json -InputObject $urlObject.domains
