@@ -35,6 +35,11 @@ try {
                 throw "not enough letters in the slug $($Slug)"
             }
 
+            if (-Not $Request.body.domains) {
+                $StatusCode = [HttpStatusCode]::BadRequest
+                throw "no domain lol"
+            }
+
             if (-Not $Request.body.url) {
                 $StatusCode = [HttpStatusCode]::BadRequest
                 throw "no url lol"
@@ -47,7 +52,7 @@ try {
             }
 
             try {
-                [array]$domains = @("short.vdwegen.app")
+                [array]$domains = $Request.body.domains #@("short.vdwegen.app")
 
                 $result = @{
                     PartitionKey = "URL"
