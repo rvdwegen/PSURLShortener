@@ -47,6 +47,18 @@ try {
                 Body        = $data
             })
         }
+    } else {
+        # temp
+        # Get the notfound HTML content
+        $datapath = (Join-Path -Path (Resolve-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath "..\Resources")) -ChildPath "notfound2.html")
+        $data = Get-Content -Path $datapath -Raw
+        $data = $data.Replace('{slugVariable}',$($Slug))
+
+        Push-OutputBinding -Name Response -Value ([HttpResponseContext]@{
+            StatusCode  = [HttpStatusCode]::OK
+            Headers     = @{ 'content-type' = 'text/html' }
+            Body        = $data
+        })
     }
 
     # If the ExpiryDate is filled and its expired, remove the slug
