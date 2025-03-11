@@ -25,7 +25,7 @@ try {
         $ExpiryDate = $urlObject.ExpiryDate
 
         # Check if the incoming slug and incoming domain matches the domains on the registered slug and if the slug hasn't expired
-        if ($Domain -in $urlDomains -AND ($ExpiryDate -gt (Get-Date) -OR $ExpiryDate -eq $null)) {
+        if ($Domain -in $urlDomains -AND ($ExpiryDate -gt (Get-Date) -OR $null -eq $ExpiryDate)) {
             # Give a 302 response back
             Push-OutputBinding -Name Response -Value ([HttpResponseContext]@{
                 StatusCode  = [HttpStatusCode]::Found
