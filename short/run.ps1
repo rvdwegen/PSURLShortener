@@ -60,7 +60,7 @@ try {
                     slug = $slug
                     originalURL = $Request.body.url
                     domains = [string](ConvertTo-Json -InputObject $domains -Compress)
-                    shortURL = "https://short.vdwegen.app/$slug" # don't hardcode the url
+                    #shortURL = "https://short.vdwegen.app/$slug" # don't hardcode the url
                     visitors = 0
                     #ExpiryDate = [DateTime]$Request.body.expiryDate
                     ExpiryDate = if ($Request.body.expiryDate) { [DateTime]::Parse($Request.body.expiryDate).ToUniversalTime().AddMilliseconds(1) } else { $null }
