@@ -18,23 +18,23 @@ try {
             } else {
                 $slug = (("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789").ToCharArray() | Get-Random -Count 6) -Join ""
             }
-    
+
             $functions = @(
                 'list',
                 'login',
                 'logout'
             )
-        
+
             if ($slug -in $functions) {
                 $StatusCode = [HttpStatusCode]::BadRequest
                 throw "slug $($Slug) is banned word"
             }
-        
+
             if ($slug.Length -lt 6) {
                 $StatusCode = [HttpStatusCode]::BadRequest
                 throw "not enough letters in the slug $($Slug)"
             }
-        
+
             if (-Not $Request.body.url) {
                 $StatusCode = [HttpStatusCode]::BadRequest
                 throw "no url lol"
@@ -62,7 +62,7 @@ try {
                     CreatedOn = [DateTime]::SpecifyKind((Get-Date), [DateTimeKind]::Utc) #(Get-Date).ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss.fffffffK")
                     CreatedBy = $Request.Headers.'x-ms-client-principal-name'
                 }
-            
+
                 Add-AzDataTableEntity -Entity $result -context $urlTableContext
                 $StatusCode = [HttpStatusCode]::OK
                 $result.Remove('PartitionKey')
