@@ -3,22 +3,25 @@ using namespace System.Net
 # Input bindings are passed in via param block.
 param($Request, $TriggerMetadata)
 
+# Define parameters from $Request
 $Domain = ([uri]$Request.Headers.'x-ms-original-url').Host
 $Slug = ([uri]$Request.Headers.'x-ms-original-url').Segments[1]
 
+# Create table context
 $urlTableContext = New-TableContext -TableName 'shorturls'
 
 try {
-    Write-Host "slug is $($slug)"
+    # Check if the slug exists
     $urlObject = (Get-AzDataTableEntity -Filter "slug eq '$($Slug)'" -context $urlTableContext)
     if ($urlObject) {
 
+        # Convert the domains cell to an object
         $urlDomains = ConvertFrom-Json -InputObject $urlObject.domains
+
+        # Define the ExpiryDate if its filled
         $ExpiryDate = $urlObject.ExpiryDate
 
-        Write-Host "$($slug) / $($Domain) / $ExpiryDate "
-
-
+        # Check if the incoming slug and incoming domain matches the domains on the registered slug and if the slug hasn't expired
         if ($Domain -in $urlDomains -AND ($ExpiryDate -gt (Get-Date) -OR $ExpiryDate -eq $null)) {
             # Give a 302 response back
             Push-OutputBinding -Name Response -Value ([HttpResponseContext]@{
@@ -27,9 +30,9 @@ try {
                 Body        = ''
             })
     
+            # We're redirecting so set $count to true so the visit is counted
             $count = $true
         } else {
-            Write-Host "$($ExpiryDate)"
             # Get the notfound HTML content
             $datapath = (Join-Path -Path (Resolve-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath "..\Resources")) -ChildPath "notfound2.html")
             $data = Get-Content -Path $datapath -Raw
@@ -43,6 +46,9 @@ try {
         }
     }
 
+    # If the ExpiryDate is filled and its expired, remove the slug
+    # Probably remove the visits too?
+    # Or possibly just disable?
     if ($ExpiryDate -AND $ExpiryDate -lt (Get-Date)) {
         Write-Host "Deleting $($urlObject.RowKey) because the expiryDate is $($urlObject.ExpiryDate)"
         $urlObject | Remove-AzDataTableEntity -Context $urlTableContext
@@ -51,7 +57,6 @@ try {
     throw "Error on line $($_.InvocationInfo.ScriptLineNumber): $($_.Exception.Message)"
 }
 
-Write-Host "after output"
 if ($count) {
     Write-Host "$($Request.Headers.'X-Forwarded-For') | $($request.headers.'client-ip')"
 
